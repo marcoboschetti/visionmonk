@@ -1,0 +1,163 @@
+<!-- Custom styles for this page -->
+<link href="/site/template/vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
+
+<!-- Page Heading -->
+<div class="d-sm-flex align-items-center justify-content-between mb-4">
+    <h1 class="h3 mb-0 text-gray-800">Inventario</h1>
+    <a class="d-sm-inline-block btn btn-success shadow" id="addEntityBtn">
+        <i class="fas fa-plus text-white-50"></i> Agregar un producto
+    </a>
+</div>
+
+<div class="row" id="loadingContainer">
+    Cargando inventario...
+</div>
+<div class="row hidden" id="noDataContainer">
+    No hay productos registrados aún.
+</div>
+
+<div class="card shadow mb-4 hidden" id="dataContainer">
+    <div class="card-header py-3">
+        <h6 class="m-0 font-weight-bold text-primary">Productos</h6>
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-bordered" id="crudTable" width="100%" cellspacing="0">
+            </table>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="crudModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog  modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 id="crudModalTitle">Agregar producto</h5>
+            </div>
+            <div class="modal-body">
+                <form class="user">
+                    <div class="row form-group">
+                        <div class="col-sm-5 mb-3 mb-sm-0">
+                            <input type="text" class="form-control" id="titleInput" placeholder="Nombre">
+                        </div>
+                        <div class="col-sm-7 mb-3 mb-sm-0" style="padding-left: 0em;">
+                            <input type="text" class="form-control" id="descriptionInput" placeholder="Descripción">
+                        </div>
+                    </div>
+                    <div class="row form-group">
+                        <div class="col-sm-5 mb-5 mb-sm-0">
+                            <div class="row form-group">
+                                <div class="col-sm-6 mb-6 mb-sm-0">
+                                    <input type="text" class="form-control" id="categoryInput" placeholder="Categoría">
+                                </div>
+                                <div class="col-sm-6 mb-6 mb-sm-0">
+                                    <input type="text" class="form-control" id="brandInput" placeholder="Marca">
+                                </div>
+                            </div>
+                            <div class="row form-group">
+                                <div class="col-sm-6 mb-6 mb-sm-0">
+                                    <input type="text" class="form-control" id="colorInput" placeholder="Color">
+                                </div>
+                                <div class="col-sm-6 mb-6 mb-sm-0">
+                                    <input type="text" class="form-control" id="sizeInput" placeholder="Tamaño">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-7 mb-7 mb-sm-0" style="padding-left: 0em;">
+                            <div class="row form-group">
+                                <div class="col-sm-6 mb-6 mb-sm-0" style="padding-left: 0em;">
+                                    <div class="input-group col-sm-12 mb-3 mb-sm-0">
+                                        <input type="text" class="form-control" id="barcodeInput" placeholder="Código">
+                                        <a id="barcodeScannerBtn" class="input-group-append btn btn-info"
+                                            style="padding-top: 0.65em;">
+                                            <i class="fas fa-camera text-white-80"></i>
+                                        </a>
+                                        <a id="iterateScannerBtn" class="input-group-append btn btn-info"
+                                            style="padding-top: 0.65em; display: none;">
+                                            <i class="fas fa-retweet text-white-80"></i>
+                                        </a>
+
+                                    </div>
+                                    <div id="barcodeVideoContainer" style="display: none; padding-left: 0.375em; padding-right: 0.375em;">
+                                        <video id="barcodeVideo" class="img-fluid"></video>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6 mb-6 mb-sm-0" style="padding-left: 0em;">
+                                    <div class="custom-file">
+                                        <input type="file" class="custom-file-input" id="imageBase64Input"
+                                            accept="image/png, image/gif, image/jpeg">
+                                        <label class="custom-file-label" for="imageBase64Input">Imágen del
+                                            producto</label>
+                                        <div id="imageFileSizeError" class="invalid-custom" style="display: none;">
+                                            El tamaño máximo de la imágen es 1MB. Perdón por las molestias.
+                                        </div>
+                                    </div>
+                                    <img id="productImagePreview" class="img-preview" style="display: none;">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                </form>
+            </div>
+            <div class="modal-footer">
+                <div class="row flex-full-width">
+                    <div class="col-md-6">
+                        <button class="btn btn-secondary btn-block" type="button" data-dismiss="modal">Cancel</button>
+                    </div>
+                    <div class="col-md-6">
+                        <a id="createEntityBtn" class="btn btn-success btn-user btn-block">
+                            Crear producto
+                        </a>
+                    </div>
+                    <div class="col-md-6">
+                        <a id="updateEntityBtn" class="btn btn-primary btn-user btn-block">
+                            Actualizar producto
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="deleteEntityModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Eliminar producto</h5>
+            </div>
+            <div class="modal-body">
+                Estas a por eliminar el producto <span id="deleteProductName" class="font-weight-bold"></span>. ¿Desea
+                continuar?
+            </div>
+            <div class="modal-footer">
+                <div class="row flex-full-width">
+                    <div class="col-md-6">
+                        <button class="btn btn-secondary btn-block" type="button" data-dismiss="modal">Cancel</button>
+                    </div>
+                    <div class="col-md-6">
+                        <a class="btn btn-danger btn-user btn-block" id="confirmDeleteEntityBtn">
+                            Eliminar producto
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Page level plugins -->
+<script type="text/javascript" src="/site/libraries/tiny-editor-0.3.0-bundle.js"></script>
+<script src="/site/template/vendor/datatables/jquery.dataTables.min.js"></script>
+<script src="/site/template/vendor/datatables/dataTables.bootstrap4.min.js"></script>
+
+<!-- Page level custom scripts -->
+<script type="text/javascript" src="/site/js/common/scanner.js"></script>
+<script type="text/javascript" src="/site/js/common/utils.js"></script>
+<script type="text/javascript" src="/site/js/common/common_crud.js"></script>
+
+<script type="text/javascript" src="/site/js/catalog.js"></script>

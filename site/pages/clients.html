@@ -1,0 +1,160 @@
+<!-- Custom styles for this page -->
+<link href="/site/template/vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
+
+<!-- Page Heading -->
+<div class="d-sm-flex align-items-center justify-content-between mb-4">
+    <h1 class="h3 mb-0 text-gray-800">Clientes</h1>
+    <a class="d-sm-inline-block btn btn-success shadow" id="addEntityBtn">
+        <i class="fas fa-plus text-white-50"></i> Agregar un cliente
+    </a>
+</div>
+
+<div class="row" id="loadingContainer">
+    Cargando clientes...
+</div>
+<div class="row hidden" id="noDataContainer">
+    No hay clientes registrados aún.
+</div>
+
+<div class="card shadow mb-4 hidden" id="dataContainer">
+    <div class="card-header py-3">
+        <h6 class="m-0 font-weight-bold text-primary">Clientes</h6>
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-bordered" id="crudTable" width="100%" cellspacing="0">
+            </table>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="crudModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog  modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 id="crudModalTitle">Agregar cliente</h5>
+            </div>
+            <div class="modal-body">
+                <form class="user">
+                    <div class="row form-group inputNamesContainer">
+                        <div class="col-sm-6 mb-3 mb-sm-0">
+                            <input type="text" class="form-control" id="firstNameInput" placeholder="Nombre">
+                        </div>
+                        <div class="col-sm-6 mb-3 mb-sm-0">
+                            <input type="text" class="form-control" id="lastNameInput" placeholder="Apellido">
+                        </div>
+                    </div>
+                    <div class="row form-group inputDirectionContainer">
+                        <div class="col-sm-4 mb-3 mb-sm-0">
+                            <input type="text" class="form-control" id="identificationInput" placeholder="CUIL / DNI">
+                        </div>
+
+                        <div class="col-sm-3 mb-3 mb-sm-0">
+                            <input type="text" class="form-control" id="socialWorkInput" placeholder="Obra social">
+                        </div>
+                        <div class="col-sm-3 mb-3 mb-sm-0">
+                            <input type="number" class="form-control" id="socialWorkNumberInput"
+                                placeholder="N° Carnet">
+                        </div>
+                        <div class="col-sm-2 mb-3 mb-sm-0">
+                            <input class="form-check-input" type="checkbox" value="" id="finalConsumerInput">
+                            <label class="form-check-label" for="finalConsumerInput">
+                                Consumidor final
+                            </label>
+                        </div>
+                    </div>
+                    <hr />
+                    <div class="row form-group inputContactContainer">
+                        <div class="col-sm-6 mb-3 mb-sm-0">
+                            <input type="text" class="form-control" id="phoneInput" placeholder="Teléfono">
+                        </div>
+                        <div class="col-sm-6">
+                            <input type="email" class="form-control" id="emailInput" placeholder="Email">
+                        </div>
+                    </div>
+                    <hr />
+                    <div class="row form-group inputDirectionContainer">
+                        <div class="col-sm-3 mb-3 mb-sm-0">
+                            <input type="text" class="form-control" id="addessInput" placeholder="Direccion">
+                        </div>
+                        <div class="col-sm-3 mb-3 mb-sm-0">
+                            <input type="text" class="form-control" id="localityInput" placeholder="Localidad">
+                        </div>
+                        <div class="col-sm-3 mb-3 mb-sm-0">
+                            <input type="text" class="form-control" id="neighborhoodInput" placeholder="Barrio">
+                        </div>
+                        <div class="col-sm-3 mb-3 mb-sm-0">
+                            <input type="text" class="form-control" id="zipCodeInput" placeholder="Codigo Postal">
+                        </div>
+                    </div>
+                    <hr />
+                    <!-- https://www.cssscript.com/tiny-rich-text-editor/ -->
+                    <label for="aditionalInfoContainer" class="form-label" data-toggle="collapse"
+                        href="#aditionalInfoContainer" role="button" aria-expanded="true"
+                        aria-controls="aditionalInfoContainer">Información adicional <i class="fas fa-plus"></i></label>
+                    <div class="collapse show" id="aditionalInfoContainer">
+                        <div class="card card-body">
+                            <div id="aditionalInfoInput" data-tiny-editor>
+                                ...
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <div class="row flex-full-width">
+                    <div class="col-md-6">
+                        <button class="btn btn-secondary btn-block" type="button" data-dismiss="modal">Cancel</button>
+                    </div>
+                    <div class="col-md-6">
+                        <a id="createEntityBtn" class="btn btn-success btn-user btn-block">
+                            Crear usuario
+                        </a>
+                    </div>
+                    <div class="col-md-6">
+                        <a id="updateEntityBtn" class="btn btn-primary btn-user btn-block">
+                            Actualizar usuario
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="deleteEntityModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Eliminar cliente</h5>
+            </div>
+            <div class="modal-body">
+                Estas a por eliminar al cliente <span id="deleteClientName" class="font-weight-bold"></span> (DNI/CUIL
+                <span id="deleteClientID" class="font-weight-bold"></span>). ¿Desea continuar?
+            </div>
+            <div class="modal-footer">
+                <div class="row flex-full-width">
+                    <div class="col-md-6">
+                        <button class="btn btn-secondary btn-block" type="button" data-dismiss="modal">Cancel</button>
+                    </div>
+                    <div class="col-md-6">
+                        <a class="btn btn-danger btn-user btn-block" id="confirmDeleteEntityBtn">
+                            Eliminar cliente
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Page level plugins -->
+<script type="text/javascript" src="/site/libraries/tiny-editor-0.3.0-bundle.js"></script>
+<script src="/site/template/vendor/datatables/jquery.dataTables.min.js"></script>
+<script src="/site/template/vendor/datatables/dataTables.bootstrap4.min.js"></script>
+
+<!-- Page level custom scripts -->
+<script type="text/javascript" src="/site/js/common/common_crud.js"></script>
+<script type="text/javascript" src="/site/js/clients.js"></script>

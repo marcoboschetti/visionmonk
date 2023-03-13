@@ -1,0 +1,71 @@
+.sidebar-brand.row {
+    height: auto;
+    align-items: center;
+    padding: .5em;
+}
+
+a.nav-link {
+    padding: 0.4em 1em !important;
+}
+
+img.img-fluid.logo {
+    width: 5em;
+}
+
+#content {
+    background: rgb(236, 235, 235);
+}
+
+#aditionalInfoInput {
+    overflow: scroll;
+    height: 300px
+}
+
+.modal-lg, .modal-xl {
+    max-width: 80vw;
+}
+
+#nav_shop_name {
+    color: white;
+    font-weight: bold;
+    padding: 0.75em;
+    font-size: 1.25em;
+}
+
+.flex-full-width{
+    flex: 0 0 100%;
+}
+
+.table-btn{
+    padding: 0.05rem 0.35rem;;
+}
+
+input[readonly]{
+  background-color:transparent;
+  border: 0;
+  font-size: 1em;
+}
+
+.hidden{
+    display: none;
+}
+
+.invalid-custom {
+    display: none;
+    width: 100%;
+    margin-top: 0.25rem;
+    font-size: 80%;
+    color: #e74a3b;
+}
+
+.img-preview {
+    width: 100%;
+    height: auto;
+    padding-bottom: 0.5em;
+    max-width: 20em;
+}
+
+img.product-table-img {
+    width: 3em;
+    padding-right: 0.4em;
+}
